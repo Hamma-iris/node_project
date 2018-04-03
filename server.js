@@ -17,7 +17,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var app = express();
 var configDB = require('./config/database.js');
-
+var http = require('http');
 var engines = require('consolidate');
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
@@ -44,5 +44,17 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
-app.listen(port);
-console.log('The magic happens on port ' + port);
+/**
+ * Create HTTP server
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network inferfaces
+ */
+
+server.listen(port);
+//server.on('error', onError);
+//server.on('listening', onListening);
+//console.log('The magic happens on port ' + port);
